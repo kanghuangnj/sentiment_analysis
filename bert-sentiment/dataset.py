@@ -50,9 +50,10 @@ class SentimentDataset:
     def _read_covid_data(filename):
         data = []
         labels = []
+        sep = '\t'
         for line in open(filename, 'r', encoding="utf-8"):
             line = line.strip('\n')
-            gold, text = line.split('\t', 1)
+            gold, text = line.split(sep, 1)
             data.append(text)
             labels.append(gold)
         return data, labels

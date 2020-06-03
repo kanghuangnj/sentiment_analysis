@@ -47,6 +47,7 @@ class SentimentBERT:
         labels = []
         probs = []
         softmax = torch.nn.Softmax()
+        temperature = 5
         for batch in tqdm(dataloader, desc="Computing NER tags"):
             labels.append(batch[1].numpy())
             #print (batch[1])
@@ -55,7 +56,7 @@ class SentimentBERT:
             with torch.no_grad():
                 outputs = self.model(batch[0])
                 _, is_neg = torch.max(outputs[0], 1)
-                prob = softmax(outputs[0])
+                prob = softmax(outputs[0] / temperature)
                 prob = prob.cpu().detach().numpy()
                 is_neg = is_neg.cpu().detach().numpy()
                 probs.append(prob[0][is_neg])

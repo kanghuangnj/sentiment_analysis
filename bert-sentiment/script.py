@@ -9,7 +9,7 @@ from dataset import SentimentDataset
 from model import SentimentBERT
 
 pj = os.path.join
-BERT_MODEL = 'roberta-large' #'pretrain/roberta-pretrain' #'pretrain/bert-pretrain' #'bert-base-uncased' 
+BERT_MODEL = 'roberta-base' #'pretrain/roberta-pretrain' #'pretrain/bert-pretrain' #'bert-base-uncased' 
 NUM_LABELS = 3  # negative, neutral and positive reviews
 
 parser = argparse.ArgumentParser(prog='script')
@@ -22,7 +22,7 @@ parser.add_argument('--train-file', default='../data/train_all_aug.txt',
                     type=str, help="covid train file. One sentence per line.")
 parser.add_argument('--test-file', default='../data/covidDownload_unlabel.csv',
                     type=str, help="covid test file. One sentence per line.")
-parser.add_argument('--train-dir', default='../cv/train_mix_aug2',
+parser.add_argument('--train-dir', default='../cv/train_mix_aug4',
                     type=str, help="covid train file. One sentence per line.")
 parser.add_argument('--test-dir', default='../cv/test',
                     type=str, help="covid test file. One sentence per line.")
@@ -76,7 +76,7 @@ def predict(test_file, model_dir="weights/"):
         probility.append(result[1][0])
         prediction.append(pred)
     covid_df['roberta_pred'] = prediction
-    #covid_df['roberta_score'] = probility
+    covid_df['roberta_score'] = probility
     covid_df.to_csv('../data/prediction.csv')
 
 def cross_validation(train_dir, epochs=20, output_dir="cv_weights/"):
@@ -96,7 +96,6 @@ def cross_validation(train_dir, epochs=20, output_dir="cv_weights/"):
         print ('test...')
         score = evaluate(test_file, model_dir=output_path)
         scores.append(score)
-        break
     print (scores)
 
 if __name__ == '__main__':
